@@ -1,0 +1,32 @@
+name: API平均响应时间
+type: metric_aggregation
+
+#es_host: localhost
+#es_port: 9200
+
+index: logstash-*
+
+buffer_time:
+  hours: 1
+
+metric_agg_key: request_time 
+metric_agg_type: avg
+doc_type: api_request 
+  
+bucket_interval:
+  minutes: 5
+  
+sync_bucket_interval: true
+#allow_buffer_time_overlap: true
+#use_run_every_query_size: true
+
+max_threshold: 300 
+
+# (Required)
+# The alert is use when a match is found
+alert:
+- "debug"
+- "elastalert_modules.dingtalk_alert.DingTalkAlerter"
+
+dingtalk_webhook: ""
+dingtalk_msgtype: "text"
